@@ -4,10 +4,17 @@
  *	this will receive data of the user's links and store them in the backend file (tbd, also oh god I hope it doesn't
  *	get too big). The page will get prettier as time goes on, but expect plain text for a while. 
 */
-var http = require('http');	//i dunno
+var http = require('http');	//requires
 var fs = require('fs');
-var server = http.createServer(function (req, res) {
-	displayForm(res);
+var formidable = require("formidable");
+var util = require('util');
+
+var server = http.createServer(function (req, res) {	//create server
+	if (req.method.toLowerCase() === 'get') {			//init get
+		displayForm(res);
+	} else if (req.method.toLowerCase() === 'post') {	//submitted post
+		processForm(req, res);
+	}
 });
 
 function displayForm(res) {
@@ -18,6 +25,22 @@ function displayForm(res) {
 		});
 		res.write(data);
 		res.end();
+	});
+}
+
+function processForm(req, res) {
+	var form = new formidable.IncomingForm();
+	
+	form.parse(req, function (err, fields, files) {
+		//store data somehows
+		res.writeHead(200, {
+			'content-type': 'text/plain'
+		});
+		res.write('shortened link available on port 1334\n\n');	//this will print the shortened link in final ver
+		res.end(util.inspect({
+			fields: fields,
+			files: files
+		}));
 	});
 }
 

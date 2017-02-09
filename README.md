@@ -18,6 +18,14 @@
 	Main Programmer: Zachary Luck
 	(More to come!)
 	
+## Stuff needs doin'
+	* Get an actual server up
+	* Get inputs from user
+	* Shorten link
+	* Store data in backend
+	* ??????
+	* Profit 
+
 ### Tools
 
 Created with [Nodeclipse](https://github.com/Nodeclipse/nodeclipse-1)

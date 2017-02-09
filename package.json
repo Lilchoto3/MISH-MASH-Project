@@ -1,18 +1,26 @@
 {
-  "name": "MISHProj",
-  "version": "0.1.0",
-  "description": "MISHProj",
-  "main": "hello-world-server.js",
+  "name": "mishproj",
+  "version": "0.0.1",
+  "description": "combines multiple links into a shortened link which when clicked will open up seperate tabs for each link.",
+  "main": "frontend.js",
   "scripts": {
-    "test": "echo \"Error: no test specified! Configure in package.json\" && exit 1"
+    "test": "echo \\\"Error: no test specified\\\" && exit 1"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lilchoto3/MISH-MASH-Project.git"
+  },
   "keywords": [
-    "node.js",
-    "eclipse",
-    "nodeclipse"
+    "NodeJS",
+    "JavaScript"
   ],
-  "author": "",
-  "license": "MIT",
-  "readmeFilename": "README.md"
+  "author": "Zachary Luck",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lilchoto3/MISH-MASH-Project/issues"
+  },
+  "homepage": "https://github.com/Lilchoto3/MISH-MASH-Project#readme",
+  "dependencies": {
+    "formidable": "^1.1.1"
+  }
 }
