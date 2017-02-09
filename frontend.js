@@ -45,7 +45,7 @@ function processForm(req, res) {						//after receiving input
 	});
 }
 function debugLog(fields) {
-	for (var i=0;i<5;i++) {
+	for (var i=0;i<fields.length;i++) {
 		console.log(i+": "+fields[i]);
 	}
 	console.log("length: "+fields.length);
@@ -61,9 +61,9 @@ function processFields(req, res) {
         numLinks++;
     });
     form.on('end', function () {
-    	var fields = ["", "", "", "", ""];	//initialize fields[]
+    	var fields = [];	//initialize fields[]
     	for (var i=0;i<numLinks;i++) {
-    		fields[i] = fieldsIn[i];		//copy values
+    		fields.push(fieldsIn[i]);		//copy values
     	}
     	debugLog(fields);	//debug before cleanup
     	for (var i=0;i<numLinks;i++) {	//array fixer, will ignore blank urls and shorten fields[] if blank is encountered
