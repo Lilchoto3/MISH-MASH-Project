@@ -13,11 +13,12 @@ var server = http.createServer(function (req, res) {	//create server
 	if (req.method.toLowerCase() === 'get') {			//init get
 		displayForm(res);
 	} else if (req.method.toLowerCase() === 'post') {	//submitted post
-		processForm(req, res);
+		//processForm(req, res);
+		processFields(req, res);
 	}
 });
 
-function displayForm(res) {
+function displayForm(res) {								//first displayed page
 	fs.readFile('frontend.html', function (err, data) {
 		res.writeHead(200, {
 			'Content-Type': 'text/html',
@@ -28,7 +29,7 @@ function displayForm(res) {
 	});
 }
 
-function processForm(req, res) {
+function processForm(req, res) {						//after receiving input
 	var form = new formidable.IncomingForm();
 	
 	form.parse(req, function (err, fields, files) {
@@ -38,11 +39,51 @@ function processForm(req, res) {
 		});
 		res.write('shortened link available on port 1334\n\n');	//this will print the shortened link in final ver
 		res.end(util.inspect({
-			fields: fields,
-			files: files
+			fields: fields,		//3 links printed here
+			files: files		//doesn't seem to be any files
 		}));
 	});
 }
+function debugLog(fields) {
+	for (var i=0;i<5;i++) {
+		console.log(i+": "+fields[i]);
+	}
+	console.log("length: "+fields.length);
+}
+function processFields(req, res) {
+	var fieldsIn = [];
+    var form = new formidable.IncomingForm();
+    var numLinks = 0;
+    form.on('field', function (field, value) {//get field values and store them in array fields[]
+        console.log(field);	//log the field name and value of the field
+        console.log(value);
+        fieldsIn[field] = value;
+        numLinks++;
+    });
+    form.on('end', function () {
+    	var fields = ["", "", "", "", ""];	//initialize fields[]
+    	for (var i=0;i<numLinks;i++) {
+    		fields[i] = fieldsIn[i];		//copy values
+    	}
+    	debugLog(fields);	//debug before cleanup
+    	for (var i=0;i<numLinks;i++) {	//array fixer, will ignore blank urls and shorten fields[] if blank is encountered
+    		if (fields[i]==="") {			//text boxes ask for arrays in html file, don't need to worry about
+    			fields.splice(i, 1);
+    		}
+    	}
+    	debugLog(fields);	//debug after cleanup
+        res.writeHead(200, {
+            'content-type': 'text/plain'
+        });
+        res.write('received the data:\n\n'); //debug output to frontend.js
+        res.end(util.inspect({
+            fields: fieldsIn
+        }));
+    });
+    form.parse(req);
+}
+
+
 
 server.listen(1337);
 console.log('Server running at http://127.0.0.1:1337/');

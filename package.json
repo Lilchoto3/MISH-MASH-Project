@@ -1,6 +1,6 @@
 {
   "name": "mishproj",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "combines multiple links into a shortened link which when clicked will open up seperate tabs for each link.",
   "main": "frontend.js",
   "scripts": {
