@@ -1,8 +1,9 @@
 /*
  *	This is the main frontend file for MISH/MASH, it'll be what you see when you load your webpage, as of right now,
  *	it runs only to localhost (127.0.0.1) on port 1337 (teehee), this will change when it finally goes live for testing.
- *	this will receive data of the user's links and store them in the backend file (tbd, also oh god I hope it doesn't
- *	get too big). The page will get prettier as time goes on, but expect plain text for a while. 
+ *	this will receive data of the user's links and spin up a new backend Object, which will have
+ *	an express app running in it hosting the link (oh god I hope it doesn't get too big).
+ *	The page will get prettier as time goes on, but expect plain html and text for a while. 
 */
 var http = require('http');	//requires
 var fs = require('fs');
@@ -12,13 +13,23 @@ var io = require('socket.io')(http);
 var express = require('express');
 var app = express();
 
-var server = http.createServer(function (req, res) {	//create server
+/* var server = http.createServer(function (req, res) {	//create server
 	if (req.method.toLowerCase() === 'get') {			//init get
 		displayForm(res);
 	} else if (req.method.toLowerCase() === 'post') {	//submitted post
 		//processForm(req, res);
 		processFields(req, res);
 	}
+}); */
+
+app.set('case sensitive routing', true);
+
+app.get ('/', function(req, res) {
+	displayForm(res);
+});
+
+app.post ('/', function(req, res) {
+	processFields(req, res);
 });
 
 function displayForm(res) {								//first displayed page
@@ -32,7 +43,7 @@ function displayForm(res) {								//first displayed page
 	});
 }
 
-function processForm(req, res) {	//not used, might remove
+/* function processForm(req, res) {	//not used, might remove
 	var form = new formidable.IncomingForm();
 	
 	form.parse(req, function (err, fields, files) {
@@ -46,7 +57,7 @@ function processForm(req, res) {	//not used, might remove
 			files: files		//doesn't seem to be any files
 		}));
 	});
-}
+} */
 
 function debugLog(fields) {
 	for (var i=0;i<fields.length;i++) {
@@ -55,21 +66,28 @@ function debugLog(fields) {
 	console.log("length: "+fields.length);
 }
 
-function createMISH () {
-	var id = makeId();
+//The following is the MISH object function, I'm gonna try and use this to create temp pages for MISHs that Users create.
+//it's gonna use express.js to set the temp URL by running an express within an express.
+//fingers crossed
+function createMISH(fields) {	//create temp MISH link
+	var sub = express();	//create new express
+	var id = makeId();		//get a random 8 char id
+	
 	console.log(id);
-	app.get('/:id', function(req, res) {
-		res.writeHead(200, {
-            'content-type': 'text/plain'
-        });
-		res.end('Page Created.');
+	
+	sub.get('/', function(req, res) {	//on temp express get
+		res.set('Content-type', 'text/plain');
+		res.send('Temp page operational, begin phase 2.');	//write all clear
+		res.end();
 	});
+	
+	app.use('/'+id, sub);	//I hope this is right
 }
 
 function makeId()	//http://stackoverflow.com/a/1349426
 {
     var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*_-+=";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$&*_-+=";
 
     for (var i=0; i<8; i++) {
     	text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -99,7 +117,7 @@ function processFields(req, res) {
     		}
     	}
     	debugLog(fields);	//debug after cleanup
-    	createMISH();
+    	createMISH(fields);
         res.writeHead(200, {
             'content-type': 'text/plain'
         });
@@ -113,5 +131,6 @@ function processFields(req, res) {
 
 
 
-server.listen(1337);
-console.log('Server running at http://127.0.0.1:1337/');
+//server.listen(1337, ["192.168.1.9"]);
+app.listen(1337, ["192.168.1.9"]);
+console.log('Server running at http://192.168.1.9:1337/');
