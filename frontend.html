@@ -1,4 +1,7 @@
 <html>
+	<head>
+		<script type="text/javascript" src="backend.js"></script>
+	</head>
 	<body>
 		<form action="" method="post" enctype="multipart/form-data">
 			<fieldset>
@@ -21,7 +24,9 @@
 				<label for="input5">Link 5:</label>
 				<input type="url" id="4" name="4" />
 				<br />
-				<input type="submit" value="Create MISH/MASH" />
+				<form onsubmit="listenServer();" class="my-form">
+					<input type="submit" value="Create MISH/MASH" />
+				</form>
 			</fieldset>
 		</form>
 	</body>

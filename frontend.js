@@ -29,7 +29,7 @@ function displayForm(res) {								//first displayed page
 	});
 }
 
-function processForm(req, res) {						//after receiving input
+function processForm(req, res) {	//not used, might remove
 	var form = new formidable.IncomingForm();
 	
 	form.parse(req, function (err, fields, files) {
@@ -72,6 +72,7 @@ function processFields(req, res) {
     		}
     	}
     	debugLog(fields);	//debug after cleanup
+    	
         res.writeHead(200, {
             'content-type': 'text/plain'
         });
