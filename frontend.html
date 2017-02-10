@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<script type="text/javascript" src="backend.js"></script>
+		<script type="text/javascript" src="frontend.js"></script>
 	</head>
 	<body>
 		<form action="" method="post" enctype="multipart/form-data">
@@ -24,10 +24,9 @@
 				<label for="input5">Link 5:</label>
 				<input type="url" id="4" name="4" />
 				<br />
-				<form onsubmit="listenServer();" class="my-form">
-					<input type="submit" value="Create MISH/MASH" />
-				</form>
+				<input type="submit" value="Create MISH/MASH" onsubmit="createMISH();"/>
 			</fieldset>
 		</form>
 	</body>
 </html>
+

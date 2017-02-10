@@ -8,6 +8,9 @@ var http = require('http');	//requires
 var fs = require('fs');
 var formidable = require("formidable");
 var util = require('util');
+var io = require('socket.io')(http);
+var express = require('express');
+var app = express();
 
 var server = http.createServer(function (req, res) {	//create server
 	if (req.method.toLowerCase() === 'get') {			//init get
@@ -44,12 +47,36 @@ function processForm(req, res) {	//not used, might remove
 		}));
 	});
 }
+
 function debugLog(fields) {
 	for (var i=0;i<fields.length;i++) {
 		console.log(i+": "+fields[i]);
 	}
 	console.log("length: "+fields.length);
 }
+
+function createMISH () {
+	var id = makeId();
+	console.log(id);
+	app.get('/:id', function(req, res) {
+		res.writeHead(200, {
+            'content-type': 'text/plain'
+        });
+		res.end('Page Created.');
+	});
+}
+
+function makeId()	//http://stackoverflow.com/a/1349426
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*_-+=";
+
+    for (var i=0; i<8; i++) {
+    	text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+}
+
 function processFields(req, res) {
 	var fieldsIn = [];
     var form = new formidable.IncomingForm();
@@ -72,7 +99,7 @@ function processFields(req, res) {
     		}
     	}
     	debugLog(fields);	//debug after cleanup
-    	
+    	createMISH();
         res.writeHead(200, {
             'content-type': 'text/plain'
         });
