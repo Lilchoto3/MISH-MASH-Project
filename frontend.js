@@ -72,22 +72,37 @@ function debugLog(fields) {
 function createMISH(fields) {	//create temp MISH link
 	var sub = express();	//create new express
 	var id = makeId();		//get a random 8 char id
+	var diff = 1;			//will be user-input
+	var st = new Date();						//start-time
+	var et = new Date(st.getTime() + diff*60000);	//end-time
 	
 	console.log(id);
 	
 	sub.get('/', function(req, res) {	//on temp express get
-		res.set('Content-type', 'text/plain');
-		res.send('Temp page operational, begin phase 2.');	//write all clear
-		res.end();
+		fs.readFile('temp.html', function (err, data) {
+			res.set('Content-type', 'text/html');
+			res.write(data);	//temp.html
+			res.write('<p>This page was created at:</p>');
+			res.write('<p>'+st+'</p>');
+			res.write('<br>')
+			res.write('<p>This page will destruct at:</p>');
+			res.write('<p>'+et+'</p>');
+			res.end();
+		});
 	});
 	
-	app.use('/'+id, sub);	//I hope this is right
+	app.use('/'+id, sub);	//set sub-app to use generated url
+	console.log("Begin Countdown.")
+	setTimeout(function() {
+		app.delete('/'+id);
+		console.log("Countdown Ended.");
+	},(diff*60000));
 }
 
 function makeId()	//http://stackoverflow.com/a/1349426
 {
     var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$&*_-+=";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@&*_-+";
 
     for (var i=0; i<8; i++) {
     	text += possible.charAt(Math.floor(Math.random() * possible.length));

@@ -1,0 +1,18 @@
+<html>
+	<body>
+		<p>
+			The current time is: 
+		</p>
+		<p id="time">
+			[TIME LOADING]
+		</p>
+		<script type="text/javascript">
+			var myVar = setInterval(myTimer, 1000);
+			function myTimer() {
+		 	   var d = new Date();
+		 	   document.getElementById("time").innerHTML = d;
+			}
+		</script>
+		<br>
+	</body>
+</html>
