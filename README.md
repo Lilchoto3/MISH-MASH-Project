@@ -23,10 +23,11 @@
 	Simbod - Because he asked.
 	
 ## Stuff needs doin'
-	* Get an actual server up
-	* Get inputs from user
-	* Shorten link
+	* Get an actual server up - Done
+	* Get inputs from user - Done
+	* Shorten link - Done
 	* Store data in backend
+	* Delete temp page
 	* ??????
 	* Profit 
 
