@@ -18,6 +18,10 @@
 	Main Programmer: Zachary Luck
 	(More to come!)
 	
+## Special Thanks
+	Hiyashi - Because he told me to.
+	Simbod - Because he asked.
+	
 ## Stuff needs doin'
 	* Get an actual server up
 	* Get inputs from user
