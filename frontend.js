@@ -9,9 +9,10 @@ var http = require('http');	//requires
 var fs = require('fs');
 var formidable = require("formidable");
 var util = require('util');
-var io = require('socket.io')(http);
 var express = require('express');
 var app = express();
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var xml = new XMLHttpRequest();
 
 /* var server = http.createServer(function (req, res) {	//create server
 	if (req.method.toLowerCase() === 'get') {			//init get
@@ -84,7 +85,7 @@ function createMISH(fields) {	//create temp MISH link
 			res.write(data);	//temp.html
 			res.write('<p>This page was created at:</p>');
 			res.write('<p>'+st+'</p>');
-			res.write('<br>')
+			res.write('<br>');
 			res.write('<p>This page will destruct at:</p>');
 			res.write('<p>'+et+'</p>');
 			res.end();
@@ -92,9 +93,12 @@ function createMISH(fields) {	//create temp MISH link
 	});
 	
 	app.use('/'+id, sub);	//set sub-app to use generated url
-	console.log("Begin Countdown.")
+	console.log("Begin Countdown.");	//debug messages to figure out when the countdown begins and ends
 	setTimeout(function() {
-		app.delete('/'+id);
+		xml.open("DELETE",'/'+id, true);	//why do you not.
+		xml.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		xml.send();
+		sub.delete('/'+id);					//WHY DO YOU NOT.
 		console.log("Countdown Ended.");
 	},(diff*60000));
 }
